@@ -1,11 +1,10 @@
 <?php
 
 use App\Image;
-use Storage;
 
 Route::get('/', function () {
 
-    $board = ['url' => 'https://ar.pinterest.com/nicobeta/dragons.rss/'];
+    $board = ['url' => 'https://ar.pinterest.com/nicobeta/fox.rss/'];
     $str = file_get_contents($board['url']);
 
     $data = new SimpleXMLElement($str);
@@ -48,12 +47,17 @@ Route::get('/', function () {
 });
 
 Route::get('/store', function () {
-
     $image = Image::where('imported', '=', 0)->first();
+
+    $pathinfo = pathinfo($image['url']);
     $contents = file_get_contents($image['url']);
-    $name = substr($image['url'], strrpos($image['url'], '/') + 1);
-    Storage::put($name, $contents);
-    $image->imported = 1;
-    $image->save();
+
+    $path = '/D&D/Gallery/' . $image['board_name'] . '/' . $pathinfo['basename'];
+    $result = Storage::disk('dropbox')->put($path, $contents);
+
+    if ($result) {
+        $image->imported = 1;
+        $image->save();
+    }
     return $image;
 });
