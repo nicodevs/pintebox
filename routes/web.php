@@ -1,6 +1,9 @@
 <?php
 
 use App\Image;
+use App\Jobs\ImportBoardFeed;
+
+Route::get('/trigger', 'ImageController@index');
 
 Route::get('/', function () {
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Image;
 use Illuminate\Http\Request;
+use App\Jobs\ImportBoardFeed;
 
 class ImageController extends Controller
 {
@@ -14,7 +15,22 @@ class ImageController extends Controller
      */
     public function index()
     {
-        //
+        $boards = [
+            [
+                'name' => 'Fox',
+                'url' => 'https://ar.pinterest.com/nicobeta/fox.rss/',
+            ],
+            [
+                'name' => 'Dragons',
+                'url' => 'https://ar.pinterest.com/nicobeta/dragons.rss/',
+            ],
+        ];
+        foreach ($boards as $board) {
+            $this->dispatch(new ImportBoardFeed($board));
+        }
+        return [
+            'sucess' => true
+        ];
     }
 
     /**
