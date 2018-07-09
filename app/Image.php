@@ -11,5 +11,5 @@ class Image extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'url', 'pub_date', 'board_name', 'board_url'];
+    protected $fillable = ['name', 'guid', 'url', 'pub_date', 'board_id'];
 }

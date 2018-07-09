@@ -8,23 +8,23 @@ use Illuminate\Http\Request;
 class BoardController extends Controller
 {
     /**
+     * The validation rules.
+     *
+     * @var array
+     */
+    protected $rules = [
+        'name' => 'required|max:255',
+        'url' => 'sometimes|url',
+    ];
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Board $board)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return $board->with('images')->get();
     }
 
     /**
@@ -35,7 +35,8 @@ class BoardController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate($this->rules);
+        return Board::create($data);
     }
 
     /**
@@ -46,18 +47,7 @@ class BoardController extends Controller
      */
     public function show(Board $board)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Board  $board
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Board $board)
-    {
-        //
+        return $board;
     }
 
     /**
@@ -69,7 +59,8 @@ class BoardController extends Controller
      */
     public function update(Request $request, Board $board)
     {
-        //
+        $data = $request->validate($this->rules);
+        return tap($board)->update($data);
     }
 
     /**
@@ -80,6 +71,7 @@ class BoardController extends Controller
      */
     public function destroy(Board $board)
     {
-        //
+        $board->delete();
+        return ['success' => true];
     }
 }

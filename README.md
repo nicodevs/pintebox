@@ -18,3 +18,15 @@ sudo chmod -R ug+rwx storage bootstrap/cache
 ```
 php artisan migrate
 ```
+
+- Configure cron
+
+```
+* * * * * php /var/www/pinbotbot/artisan schedule:run >> /dev/null 2>&1
+```
+
+- Start queue listener
+
+```
+php artisan queue:work
+```

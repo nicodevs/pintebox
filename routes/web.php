@@ -1,8 +1,8 @@
 <?php
 
 use App\Image;
-use App\Jobs\ImportBoardFeed;
 
+/*
 Route::get('/trigger', 'ImageController@index');
 
 Route::get('/', function () {
@@ -48,6 +48,7 @@ Route::get('/', function () {
 
     return $result;
 });
+*/
 
 Route::get('/store', function () {
     $image = Image::where('imported', '=', 0)->first();
