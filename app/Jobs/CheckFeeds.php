@@ -36,18 +36,20 @@ class CheckFeeds implements ShouldQueue
     {
         $board = $this->board;
 
-        Log::info('Checking feeds');
-        Log::info(json_encode($board));
-        Log::info('Checking ' . $board['name']);
-        $guids = count($board['images']) ? array_pluck($board['images'], 'guid') : [];
+        Log::info('Checking ' . $board['name'] . ' feed');
+        $feed = @file_get_contents($board['url']);
+        if (!$feed) {
+            Log::info('Error reading ' . $board['url']);
+            return false;
+        }
 
-        $feed = file_get_contents($board['url']);
         $data = new SimpleXMLElement($feed);
         $pins = [];
         foreach ($data->channel->item as $item) {
             $pins[] = json_encode($item);
         }
 
+        $guids = count($board['images']) ? array_pluck($board['images'], 'guid') : [];
         foreach ($pins as $pin) {
             $pin = json_decode($pin, true);
             Log::info('Checking ' . $pin['guid']);

@@ -59,8 +59,14 @@ class ImportImage implements ShouldQueue
             'board_id' => $this->board['id'],
         ];
 
+
+        $contents = @file_get_contents($url);
+        if (!$contents) {
+            Log::info('Error reading ' . $url);
+            return false;
+        }
+
         $pathinfo = pathinfo($url);
-        $contents = file_get_contents($url);
         $path = '/D&D/Gallery/' . $this->board['name'] . '/' . $pathinfo['basename'];
         $result = Storage::disk('dropbox')->put($path, $contents);
 
@@ -68,7 +74,7 @@ class ImportImage implements ShouldQueue
             $image = Image::create($image);
             Log::info('Imported image ' . $url);
         } else {
-            Log::info('Error importing ' . $url);
+            Log::info('Error saving ' . $url);
         }
     }
 }
