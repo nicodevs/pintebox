@@ -18,9 +18,8 @@ class CreateImagesTable extends Migration
             $table->string('name');
             $table->string('guid');
             $table->string('url')->unique();
-            $table->string('pub_date');
             $table->unsignedInteger('board_id');
-            $table->boolean('imported')->default(0);
+            $table->dateTime('published_at');
             $table->timestamps();
         });
     }

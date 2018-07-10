@@ -36,13 +36,21 @@ class ImportImage implements ShouldQueue
      */
     public function handle()
     {
+        $date = strtotime($this->pin['pubDate']);
+        $boardDate = strtotime($this->board['created_at']);
+        if ($date < $boardDate) {
+            Log::info('Old pin, do not process: ' . $this->pin['link']);
+            return false;
+        }
+
         $re = '/(http(s?):)([\/|.|\w|\S|-])*\.(?:jpg|gif|png)/m';
         preg_match_all($re, $this->pin['description'], $matches, PREG_SET_ORDER, 0);
         if (count($matches)) {
             $url = str_replace('236x/', 'originals/', $matches[0]);
             $url = $url[0];
         } else {
-            $url = 'NOT_FOUND';
+            Log::info('Error parsing ' . $this->pin['link']);
+            return false;
         }
 
         if (array_key_exists('title', $this->pin) && is_string($this->pin['title'])) {
@@ -55,10 +63,9 @@ class ImportImage implements ShouldQueue
             'name' => $name,
             'url' => $url,
             'guid' => $this->pin['guid'],
-            'pub_date' => $this->pin['pubDate'],
+            'published_at' => date("Y-m-d H:i:s", $date),
             'board_id' => $this->board['id'],
         ];
-
 
         $contents = @file_get_contents($url);
         if (!$contents) {
