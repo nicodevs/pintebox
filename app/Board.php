@@ -11,7 +11,7 @@ class Board extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'url'];
+    protected $fillable = ['name', 'url', 'folder'];
 
     /**
      * Get the images for the board.

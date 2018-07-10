@@ -15,6 +15,7 @@ class BoardController extends Controller
     protected $rules = [
         'name' => 'required|max:255',
         'url' => 'sometimes|url',
+        'folder' => 'sometimes',
     ];
 
     /**

@@ -67,7 +67,7 @@ class ImportImage implements ShouldQueue
         }
 
         $pathinfo = pathinfo($url);
-        $path = '/D&D/Gallery/' . $this->board['name'] . '/' . $pathinfo['basename'];
+        $path = $this->board['folder'] . '/' . $pathinfo['basename'];
         $result = Storage::disk('dropbox')->put($path, $contents);
 
         if ($result) {
