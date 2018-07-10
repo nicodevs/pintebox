@@ -17,6 +17,7 @@ class CreateBoardsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('url');
+            $table->string('folder');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateBoardsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('boards');
+        // Schema::dropIfExists('boards');
     }
 }
