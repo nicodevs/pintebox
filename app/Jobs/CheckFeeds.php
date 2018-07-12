@@ -46,14 +46,17 @@ class CheckFeeds implements ShouldQueue
         $data = new SimpleXMLElement($feed);
         $pins = [];
         foreach ($data->channel->item as $item) {
-            $pins[] = json_encode($item);
+            $pins[] = json_decode(json_encode($item), true);
         }
 
+        $boardDate = strtotime($board['created_at']);
         $guids = count($board['images']) ? array_pluck($board['images'], 'guid') : [];
+
         foreach ($pins as $pin) {
-            $pin = json_decode($pin, true);
             Log::info('Checking ' . $pin['guid']);
-            if (!in_array($pin['guid'], $guids)) {
+            $pinDate = strtotime($pin['pubDate']);
+
+            if ($pinDate > $boardDate && !in_array($pin['guid'], $guids)) {
                 Log::info('New pin, dispatch import job');
                 dispatch(new ImportImage($pin, $board));
             }

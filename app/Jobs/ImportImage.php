@@ -36,13 +36,6 @@ class ImportImage implements ShouldQueue
      */
     public function handle()
     {
-        $date = strtotime($this->pin['pubDate']);
-        $boardDate = strtotime($this->board['created_at']);
-        if ($date < $boardDate) {
-            Log::info('Old pin, do not process: ' . $this->pin['link']);
-            return false;
-        }
-
         $re = '/(http(s?):)([\/|.|\w|\S|-])*\.(?:jpg|gif|png)/m';
         preg_match_all($re, $this->pin['description'], $matches, PREG_SET_ORDER, 0);
         if (count($matches)) {
