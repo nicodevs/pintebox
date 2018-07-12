@@ -52,11 +52,12 @@ class ImportImage implements ShouldQueue
            $name = str_slug($this->pin['link']);
         }
 
+        $publishedAt = date("Y-m-d H:i:s", strtotime($this->pin['pubDate']));
         $image = [
             'name' => $name,
             'url' => $url,
             'guid' => $this->pin['guid'],
-            'published_at' => date("Y-m-d H:i:s", $date),
+            'published_at' => $publishedAt,
             'board_id' => $this->board['id'],
         ];
 
