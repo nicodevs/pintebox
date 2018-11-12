@@ -48,6 +48,7 @@ class CheckFeeds implements ShouldQueue
         foreach ($data->channel->item as $item) {
             $pins[] = json_decode(json_encode($item), true);
         }
+        Log::info('Pins: ' . json_encode($pins));
 
         $boardDate = strtotime($board['created_at']);
         $guids = count($board['images']) ? array_pluck($board['images'], 'guid') : [];
@@ -59,6 +60,8 @@ class CheckFeeds implements ShouldQueue
             if ($pinDate > $boardDate && !in_array($pin['guid'], $guids)) {
                 Log::info('New pin, dispatch import job');
                 dispatch(new ImportImage($pin, $board));
+            } else {
+                Log::info('Pin already downloaded, continue');
             }
         }
     }
