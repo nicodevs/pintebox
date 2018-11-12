@@ -27,11 +27,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        Log::info('Scheduler hit');
-        $boards = Board::with('images')->get()->toArray();
-        foreach ($boards as $board) {
-            $schedule->job(new CheckFeeds($board))->everyMinute();
-        }
+        // $schedule->call(function () use ($schedule) {
+            Log::info('Scheduler hit');
+            $boards = Board::with('images')->get()->toArray();
+            foreach ($boards as $board) {
+                $schedule->job(new CheckFeeds($board))->everyMinute();
+            }
+        // });
     }
 
     /**
