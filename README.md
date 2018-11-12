@@ -21,6 +21,14 @@ php artisan migrate
 
 - Configure cron
 
+Edit crons:
+
+```
+crontab -e
+```
+
+Add this cron:
+
 ```
 * * * * * php /var/www/pinbotbot/artisan schedule:run >> /dev/null 2>&1
 ```
