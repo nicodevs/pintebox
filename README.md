@@ -2,7 +2,7 @@
 - Create database
 
 ```
-echo "create database pinbotbot" | mysql -u username -p
+echo "create database pintebox" | mysql -u username -p
 ```
 
 - Set storage folders permissions
@@ -30,7 +30,7 @@ crontab -e
 Add this cron:
 
 ```
-* * * * * php /var/www/pinbotbot/artisan schedule:run >> /dev/null 2>&1
+* * * * * php /var/www/pintebox/artisan schedule:run >> /dev/null 2>&1
 ```
 
 - Start queue listener
